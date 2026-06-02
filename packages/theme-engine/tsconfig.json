@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "paths": {
+      "@zeno-ui/tokens": ["../tokens/src/index.ts"]
+    }
+  },
+  "include": ["src"],
+  "references": []
+}
