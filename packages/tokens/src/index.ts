@@ -166,6 +166,59 @@ export type ValidationResult = {
   };
 };
 
+export const zenoTokenConfigSchemaVersion = "1.0.0" as const;
+
+export type ZenoAssetToken = {
+  url: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+  hash?: string;
+};
+
+export type ZenoTokenConfigMetadata = {
+  name: string;
+  projectId?: string;
+  environment?: string;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type ZenoTokenConfig = {
+  schemaVersion: typeof zenoTokenConfigSchemaVersion;
+  metadata: ZenoTokenConfigMetadata;
+  tokens: DesignTokens;
+  assets: Record<string, ZenoAssetToken>;
+  modes: Record<string, Partial<DesignTokens>>;
+  publishedVersion?: string;
+  validation: ValidationResult;
+};
+
+export type ZenoTokenConfigInput = {
+  schemaVersion?: string;
+  metadata?: Partial<ZenoTokenConfigMetadata>;
+  tokens?: Partial<DesignTokens>;
+  assets?: Record<string, Partial<ZenoAssetToken> | undefined>;
+  modes?: Record<string, Partial<DesignTokens> | undefined>;
+  publishedVersion?: string;
+};
+
+export type ZenoTokenConfigReadResult = {
+  valid: boolean;
+  config: ZenoTokenConfig;
+  issues: string[];
+};
+
+export const allowedAssetTokenKeys = [
+  "logo",
+  "logoDark",
+  "favicon",
+  "appIcon",
+  "emptyState",
+  "heroImage"
+] as const;
+
 export const defaultKnobs: ThemeKnobs = {
   brand: "#2563eb",
   accent: "#14b8a6",
@@ -761,5 +814,148 @@ export function validateTheme(tokens: DesignTokens): ValidationResult {
       consistency: consistencyScore,
       accessibility: accessibilityScore
     }
+  };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readString(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim().length > 0 ? value : undefined;
+}
+
+function readNumber(value: unknown): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : undefined;
+}
+
+function readTokenPatch(value: unknown): Partial<DesignTokens> {
+  if (!isRecord(value)) return {};
+  return value as Partial<DesignTokens>;
+}
+
+function normalizeMetadata(metadata: unknown, tokens: DesignTokens): ZenoTokenConfigMetadata {
+  const record = isRecord(metadata) ? metadata : {};
+  const normalized: ZenoTokenConfigMetadata = {
+    name: readString(record.name) ?? tokens.name
+  };
+  const projectId = readString(record.projectId);
+  const environment = readString(record.environment);
+  const description = readString(record.description);
+  const createdAt = readString(record.createdAt);
+  const updatedAt = readString(record.updatedAt);
+
+  if (projectId) normalized.projectId = projectId;
+  if (environment) normalized.environment = environment;
+  if (description) normalized.description = description;
+  if (createdAt) normalized.createdAt = createdAt;
+  if (updatedAt) normalized.updatedAt = updatedAt;
+
+  return normalized;
+}
+
+function normalizeAssets(assets: unknown): Record<string, ZenoAssetToken> {
+  if (!isRecord(assets)) return {};
+
+  return allowedAssetTokenKeys.reduce<Record<string, ZenoAssetToken>>((normalized, key) => {
+    const asset = assets[key];
+    if (!isRecord(asset)) return normalized;
+
+    const url = readString(asset.url);
+    const isSafeUrl = url
+      ? url.startsWith("https://") || url.startsWith("http://") || url.startsWith("/")
+      : false;
+
+    if (!url || !isSafeUrl) return normalized;
+
+    const token: ZenoAssetToken = { url };
+    const alt = readString(asset.alt);
+    const hash = readString(asset.hash);
+    const width = readNumber(asset.width);
+    const height = readNumber(asset.height);
+
+    if (alt) token.alt = alt;
+    if (hash) token.hash = hash;
+    if (width) token.width = width;
+    if (height) token.height = height;
+
+    normalized[key] = token;
+    return normalized;
+  }, {});
+}
+
+function normalizeModes(modes: unknown): Record<string, Partial<DesignTokens>> {
+  if (!isRecord(modes)) return {};
+
+  return Object.entries(modes).reduce<Record<string, Partial<DesignTokens>>>((normalized, [mode, patch]) => {
+    if (!/^[a-z0-9._-]{1,64}$/i.test(mode) || !isRecord(patch)) return normalized;
+    normalized[mode] = readTokenPatch(patch);
+    return normalized;
+  }, {});
+}
+
+export function createZenoTokenConfig({
+  metadata,
+  tokens,
+  assets,
+  modes,
+  publishedVersion
+}: ZenoTokenConfigInput = {}): ZenoTokenConfig {
+  const resolvedTokens = mergeTokens(baseTokens, readTokenPatch(tokens));
+  const validation = validateTheme(resolvedTokens);
+  const config: ZenoTokenConfig = {
+    schemaVersion: zenoTokenConfigSchemaVersion,
+    metadata: normalizeMetadata(metadata, resolvedTokens),
+    tokens: resolvedTokens,
+    assets: normalizeAssets(assets),
+    modes: normalizeModes(modes),
+    validation
+  };
+
+  const version = readString(publishedVersion);
+  if (version) config.publishedVersion = version;
+
+  return config;
+}
+
+export function readZenoTokenConfig(input: unknown): ZenoTokenConfigReadResult {
+  const issues: string[] = [];
+
+  if (!isRecord(input)) {
+    const config = createZenoTokenConfig({
+      metadata: { name: baseTokens.name }
+    });
+    return {
+      valid: false,
+      config,
+      issues: ["Token config must be an object."]
+    };
+  }
+
+  const schemaVersion = readString(input.schemaVersion);
+  if (schemaVersion !== zenoTokenConfigSchemaVersion) {
+    issues.push(`Unsupported token config schema version: ${schemaVersion ?? "missing"}.`);
+  }
+
+  if (!isRecord(input.tokens)) {
+    issues.push("Token config must include a tokens object.");
+  }
+
+  const configInput: ZenoTokenConfigInput = {
+    tokens: readTokenPatch(input.tokens)
+  };
+  const publishedVersion = readString(input.publishedVersion);
+
+  if (isRecord(input.metadata)) configInput.metadata = input.metadata;
+  if (isRecord(input.assets)) configInput.assets = input.assets as Record<string, Partial<ZenoAssetToken> | undefined>;
+  if (isRecord(input.modes)) configInput.modes = input.modes as Record<string, Partial<DesignTokens> | undefined>;
+  if (publishedVersion) configInput.publishedVersion = publishedVersion;
+
+  const config = createZenoTokenConfig(configInput);
+
+  return {
+    valid: issues.length === 0 && config.validation.valid,
+    config,
+    issues: [...issues, ...config.validation.issues]
   };
 }

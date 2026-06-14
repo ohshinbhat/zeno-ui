@@ -4,16 +4,13 @@
   "version": "0.1.0",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
-    "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "dev": "yarn build:packages && yarn workspace @zeno-ui/playground dev",
-    "build": "yarn build:packages && yarn workspace @zeno-ui/playground build",
-    "build:packages": "yarn workspace @zeno-ui/tokens build && yarn workspace @zeno-ui/animations build && yarn workspace @zeno-ui/theme-engine build && yarn workspace @zeno-ui/tailwind-preset build && yarn workspace @zeno-ui/nativewind-preset build && yarn workspace @zeno-ui/react build",
-    "storybook": "yarn build:packages && yarn workspace @zeno-ui/playground storybook",
-    "build:storybook": "yarn build:packages && yarn workspace @zeno-ui/playground build-storybook",
-    "typecheck": "yarn workspace @zeno-ui/playground typecheck && yarn workspace @zeno-ui/animations typecheck && yarn workspace @zeno-ui/nativewind-preset typecheck && yarn workspace @zeno-ui/react typecheck && yarn workspace @zeno-ui/tailwind-preset typecheck && yarn workspace @zeno-ui/theme-engine typecheck && yarn workspace @zeno-ui/tokens typecheck"
+    "dev": "yarn build:packages",
+    "build": "yarn build:packages",
+    "build:packages": "yarn workspace @zeno-ui/tokens build && yarn workspace @zeno-ui/animations build && yarn workspace @zeno-ui/theme-engine build && yarn workspace @zeno-ui/tailwind-preset build && yarn workspace @zeno-ui/nativewind-preset build && yarn workspace @zeno-ui/theme-runtime build && yarn workspace @zeno-ui/react build",
+    "typecheck": "yarn workspace @zeno-ui/animations typecheck && yarn workspace @zeno-ui/nativewind-preset typecheck && yarn workspace @zeno-ui/react typecheck && yarn workspace @zeno-ui/tailwind-preset typecheck && yarn workspace @zeno-ui/theme-engine typecheck && yarn workspace @zeno-ui/theme-runtime typecheck && yarn workspace @zeno-ui/tokens typecheck"
   },
   "devDependencies": {
     "@types/node": "^22.10.5",
