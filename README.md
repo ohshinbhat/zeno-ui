@@ -26,6 +26,7 @@ The website, console, playground, and Storybook host now live in the sibling pro
 - `packages/nativewind-preset` - NativeWind-compatible theme output.
 - `packages/animations` - token-driven animation utilities.
 - `docs/architecture.md` - editable product architecture and repo plan for the website, package, and backend.
+- `docs/publishing.md` - npm Trusted Publishing release process and fallback guidance.
 - `docs/zeno-agent-context.md` - operational agent context for cloud runtime, package contracts, Supabase, and npm readiness.
 - `docs/token-hosting.md` - hosted control plane setup, provider integration, Supabase schema, and fallback behavior.
 
@@ -37,6 +38,7 @@ yarn dev
 yarn typecheck
 yarn build:packages
 yarn build
+yarn release:check
 yarn pack:packages
 ```
 
@@ -46,7 +48,9 @@ The repo uses Yarn Classic workspaces and does not require Corepack.
 
 The root package is private. Publish only the workspace packages under `packages/*`.
 
-Before publishing:
+The preferred release path is npm Trusted Publishing through GitHub Actions. This uses OIDC from the `publish.yml` workflow instead of a long-lived npm token or local OTP prompts, and npm automatically creates provenance attestations for public packages published this way.
+
+Before releasing:
 
 ```bash
 yarn install
@@ -54,13 +58,28 @@ yarn typecheck
 yarn pack:packages
 ```
 
-Publish all packages in dependency order:
+See `docs/publishing.md` for the full release process. Configure npm once for each package:
+
+- On npmjs.com, open each `@zeno-ui/*` package settings page.
+- Add a Trusted Publisher.
+- Provider: GitHub Actions.
+- Organization/user: `ohshinbhat`.
+- Repository: `zeno-ui`.
+- Workflow filename: `publish.yml`.
+- Allowed action: `npm publish`.
+
+Publish from GitHub:
 
 ```bash
-yarn publish:packages
+git tag v0.1.0
+git push origin v0.1.0
 ```
 
+You can also run the `Publish Packages` workflow manually from GitHub Actions. The release script publishes packages in dependency order and skips package versions that are already on npm, so rerunning after a partial publish is safe.
+
 Each package is scoped as `@zeno-ui/*` and has `publishConfig.access` set to `public`.
+
+Local publishing is intentionally a fallback. If you publish locally, use an npm granular access token configured for package publish with the required 2FA policy, then run `yarn publish:packages:built`. Do not commit tokens or `.npmrc` auth lines.
 
 ## Component Packages
 

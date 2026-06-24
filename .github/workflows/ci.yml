@@ -12,12 +12,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: yarn
 
       - name: Install dependencies
@@ -26,8 +26,8 @@ jobs:
       - name: Typecheck
         run: yarn typecheck
 
-      - name: Build
-        run: yarn build
+      - name: Build packages
+        run: yarn build:packages
 
-      - name: Build Storybook
-        run: yarn build:storybook
+      - name: Pack dry-run
+        run: yarn pack:packages:built

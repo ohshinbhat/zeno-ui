@@ -13,9 +13,11 @@
     "build": "yarn build:packages",
     "build:packages": "yarn workspace @zeno-ui/tokens build && yarn workspace @zeno-ui/animations build && yarn workspace @zeno-ui/theme-engine build && yarn workspace @zeno-ui/tailwind-preset build && yarn workspace @zeno-ui/nativewind-preset build && yarn workspace @zeno-ui/theme-runtime build && yarn workspace @zeno-ui/react build && yarn workspace @zeno-ui/react-native build",
     "typecheck": "yarn workspace @zeno-ui/animations typecheck && yarn workspace @zeno-ui/nativewind-preset typecheck && yarn workspace @zeno-ui/react typecheck && yarn workspace @zeno-ui/react-native typecheck && yarn workspace @zeno-ui/tailwind-preset typecheck && yarn workspace @zeno-ui/theme-engine typecheck && yarn workspace @zeno-ui/theme-runtime typecheck && yarn workspace @zeno-ui/tokens typecheck",
-    "pack:packages": "yarn build:packages && npm --cache .npm-cache pack --dry-run ./packages/tokens && npm --cache .npm-cache pack --dry-run ./packages/animations && npm --cache .npm-cache pack --dry-run ./packages/theme-engine && npm --cache .npm-cache pack --dry-run ./packages/tailwind-preset && npm --cache .npm-cache pack --dry-run ./packages/nativewind-preset && npm --cache .npm-cache pack --dry-run ./packages/theme-runtime && npm --cache .npm-cache pack --dry-run ./packages/react && npm --cache .npm-cache pack --dry-run ./packages/react-native",
-    "publish:packages": "yarn build:packages && yarn publish:packages:built",
-    "publish:packages:built": "npm --cache .npm-cache publish ./packages/tokens --access public --registry https://registry.npmjs.org/ && npm --cache .npm-cache publish ./packages/animations --access public --registry https://registry.npmjs.org/ && npm --cache .npm-cache publish ./packages/theme-engine --access public --registry https://registry.npmjs.org/ && npm --cache .npm-cache publish ./packages/tailwind-preset --access public --registry https://registry.npmjs.org/ && npm --cache .npm-cache publish ./packages/nativewind-preset --access public --registry https://registry.npmjs.org/ && npm --cache .npm-cache publish ./packages/theme-runtime --access public --registry https://registry.npmjs.org/ && npm --cache .npm-cache publish ./packages/react --access public --registry https://registry.npmjs.org/ && npm --cache .npm-cache publish ./packages/react-native --access public --registry https://registry.npmjs.org/"
+    "pack:packages": "yarn build:packages && yarn pack:packages:built",
+    "pack:packages:built": "node scripts/release-packages.mjs --pack",
+    "release:check": "yarn typecheck && yarn pack:packages",
+    "publish:packages": "node scripts/publish-help.mjs",
+    "publish:packages:built": "node scripts/release-packages.mjs --publish"
   },
   "repository": {
     "type": "git",
