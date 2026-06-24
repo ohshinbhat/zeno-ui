@@ -42,7 +42,12 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Assert manifest versions
+      - name: Prepare manual release version
+        if: github.event_name == 'workflow_dispatch'
+        run: yarn release:version "$RELEASE_VERSION"
+
+      - name: Assert tagged release version
+        if: github.event_name == 'push'
         run: node ./scripts/assert-release-version.mjs "$RELEASE_VERSION"
 
       - name: Build release artifacts
@@ -50,4 +55,3 @@ jobs:
 
       - name: Publish npm packages
         run: yarn release:publish
-

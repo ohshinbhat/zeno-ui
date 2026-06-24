@@ -65,7 +65,17 @@ git push origin main --tags
 
 4. GitHub Actions publishes both packages from the `v*` tag through the publish workflow in `.github/workflows/publish.yml`.
 
-If you prefer a manual GitHub publish, run the `Publish Packages` workflow from the Actions tab and pass the exact version.
+If you prefer a manual GitHub publish, run the `Publish Packages` workflow from the Actions tab and pass the exact version. The workflow now applies that version inside CI before it builds and publishes.
+
+For tag-based releases, commit and push the version bump first so the tag points at manifests with the same version:
+
+```bash
+yarn release:version 1.0.0
+git add .
+git commit -m "Release v1.0.0"
+git tag v1.0.0
+git push origin main --tags
+```
 
 ## Trusted Publishing
 
