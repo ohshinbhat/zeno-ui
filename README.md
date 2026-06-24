@@ -45,7 +45,7 @@ yarn pack:packages
 1. Bump both publishable packages to one shared version:
 
 ```bash
-yarn release:version 0.1.1
+yarn release:version <version>
 ```
 
 2. Verify the release artifacts locally:
@@ -58,8 +58,8 @@ yarn release:check
 
 ```bash
 git add .
-git commit -m "Release v0.1.1"
-git tag v0.1.1
+git commit -m "Release v<version>"
+git tag v<version>
 git push origin main --tags
 ```
 
@@ -70,10 +70,10 @@ If you prefer a manual GitHub publish, run the `Publish Packages` workflow from 
 For tag-based releases, commit and push the version bump first so the tag points at manifests with the same version:
 
 ```bash
-yarn release:version 1.0.0
+yarn release:version <version>
 git add .
-git commit -m "Release v1.0.0"
-git tag v1.0.0
+git commit -m "Release v<version>"
+git tag v<version>
 git push origin main --tags
 ```
 
