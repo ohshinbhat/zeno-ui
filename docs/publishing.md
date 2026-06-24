@@ -1,6 +1,6 @@
 # Publishing Zeno UI Packages
 
-Zeno UI publishes multiple npm workspaces under the `@zeno-ui/*` scope.
+Zeno UI publishes two npm workspaces under the `@zeno-ui/*` scope.
 
 ## Recommended Path
 
@@ -10,25 +10,19 @@ Use npm Trusted Publishing from GitHub Actions. This is the preferred path becau
 
 For each published package, configure a Trusted Publisher on npmjs.com:
 
-- Package: each `@zeno-ui/*` package.
+- Package: `@zeno-ui/react` and `@zeno-ui/react-native`.
 - Publisher: GitHub Actions.
 - Organization/user: `ohshinbhat`.
 - Repository: `zeno-ui`.
 - Workflow filename: `publish.yml`.
 - Allowed action: `npm publish`.
 
-Current package list:
+Current public package list:
 
-- `@zeno-ui/tokens`
-- `@zeno-ui/animations`
-- `@zeno-ui/theme-engine`
-- `@zeno-ui/tailwind-preset`
-- `@zeno-ui/nativewind-preset`
-- `@zeno-ui/theme-runtime`
 - `@zeno-ui/react`
 - `@zeno-ui/react-native`
 
-If npm does not allow Trusted Publisher setup before the first publish, do the first publish with a short-lived granular npm token that has publish access and satisfies the package 2FA policy. After the first publish succeeds, configure Trusted Publisher for every package and revoke the temporary token.
+If npm does not allow Trusted Publisher setup before the first publish, do the first publish with a short-lived granular npm token that has publish access and satisfies the package 2FA policy. After the first publish succeeds, configure Trusted Publisher for both public packages and revoke the temporary token.
 
 ## Release From GitHub
 
@@ -48,16 +42,16 @@ git push origin v0.1.0
 The `Publish Packages` workflow will:
 
 1. Install dependencies.
-2. Typecheck every package.
-3. Build every package.
-4. Run npm pack dry-run for every package.
-5. Publish packages in dependency order.
+2. Typecheck both public packages.
+3. Build both public packages.
+4. Run npm pack dry-run for both public packages.
+5. Publish both public packages.
 
 You can also start the workflow manually in GitHub Actions and choose the npm dist-tag, usually `latest`.
 
 ## Reruns And Partial Publishes
 
-The release script checks npm before publishing each package. If a package version is already published, it skips that package and continues. This makes reruns safe after a partial publish.
+The release script checks npm before publishing each public package. If a package version is already published, it skips that package and continues. This makes reruns safe after a partial publish.
 
 ## Local Emergency Fallback
 

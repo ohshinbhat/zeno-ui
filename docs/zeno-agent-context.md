@@ -125,34 +125,25 @@ Do not reintroduce manual admin-token publishing. Publishing is session based an
 
 ## Repository: `zeno-ui`
 
-`zeno-ui` is the UI library and npm package family. It is consumed by external apps and also used by `zeno-site`.
+`zeno-ui` is the UI library package repo. It is consumed by external apps and also used by `zeno-site`.
 
-The package family includes:
+The public package family is intentionally small:
 
-- React primitives.
-- React Native primitives and NativeWind-compatible output.
-- Token schema and validation.
-- Theme generation.
-- Tailwind/runtime CSS generation.
-- Runtime theme provider.
-- Token-driven animation helpers.
+- `@zeno-ui/react`
+- `@zeno-ui/react-native`
+
+Token schema, theme runtime, CSS generation, and native token mapping are shipped inside those public packages. Older supporting package folders may remain in the repo as private/internal history, but they should not be published as separate npm packages.
 
 The library currently has a small React component set. It should grow around stable primitives that consume the same semantic token contract across React web and React Native.
 
 ## Package Responsibilities
 
-Keep the `@zeno-ui/*` package names stable.
+Keep the public `@zeno-ui/*` package names stable.
 
 | Package | Responsibility | Runtime role |
 | --- | --- | --- |
-| `@zeno-ui/tokens` | Token schema, presets, validation, color utilities | Defines and validates the published JSON contract |
-| `@zeno-ui/theme-engine` | Deterministic prompt-to-theme generation | Used by cloud generation and local tooling, not required in consumer runtime |
-| `@zeno-ui/tailwind-preset` | Runtime CSS and Tailwind token output | Converts tokens to CSS variables and Tailwind-compatible theme output |
-| `@zeno-ui/nativewind-preset` | React Native / NativeWind token output | Converts the same semantic tokens for NativeWind/Expo usage |
-| `@zeno-ui/theme-runtime` | Provider, hosted-theme loader, cache, pre-hydration script | Fetches active themes and exposes runtime state to apps |
-| `@zeno-ui/react` | React web primitives | Current web component package |
-| `@zeno-ui/react-native` | React Native primitives and native provider | Consumes the same token config as concrete React Native styles |
-| `@zeno-ui/animations` | Token-driven animation helpers | Generates animation CSS and reusable motion utilities |
+| `@zeno-ui/react` | React web primitives, token config helpers, runtime CSS, hosted theme provider | Main web package |
+| `@zeno-ui/react-native` | React Native primitives, token config helpers, native provider | Main native package |
 
 Planned package direction:
 
@@ -160,8 +151,7 @@ Planned package direction:
 - Keep Zeno as the public API and product layer.
 - Use Tamagui as a dependency/wrapper target, not copied source.
 - Keep runtime theme freshness in Zeno token JSON and provider context; do not fetch or execute remote Tailwind config code.
-- Add `@zeno-ui/tamagui-config` or equivalent when Tamagui integration starts.
-- Consider `@zeno-ui/ui` as the future universal package name if `@zeno-ui/react` becomes too web-specific.
+- Do not split new public npm packages unless there is a strong install-size or platform-boundary reason.
 
 ## Component Contract
 
@@ -219,7 +209,7 @@ For web apps, pre-hydration theme application matters. Use `createZenoThemeScrip
 Next.js example:
 
 ```tsx
-import { createZenoThemeScript, ZenoThemeProvider } from "@zeno-ui/theme-runtime";
+import { createZenoThemeScript, ZenoThemeProvider } from "@zeno-ui/react";
 
 const source = {
   type: "zeno",
@@ -369,7 +359,10 @@ Published version rules:
 
 ## npm Package Readiness
 
-The `zeno-ui` root package is private. Publish only workspace packages under `packages/*`.
+The `zeno-ui` root package is private. Publish only:
+
+- `@zeno-ui/react`
+- `@zeno-ui/react-native`
 
 Before publishing:
 
@@ -379,10 +372,10 @@ yarn typecheck
 yarn pack:packages
 ```
 
-Publish in dependency order:
+Publish through GitHub Actions trusted publishing. The local command is a guardrail:
 
 ```bash
-yarn publish:packages
+yarn release:check
 ```
 
 Package invariants:

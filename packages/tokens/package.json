@@ -1,6 +1,7 @@
 {
   "name": "@zeno-ui/tokens",
   "version": "0.1.0",
+  "private": true,
   "description": "Canonical token schema, presets, validation, and color utilities for Zeno UI.",
   "license": "MIT",
   "type": "module",

@@ -7,19 +7,7 @@ npm install @zeno-ui/react react react-dom
 ```
 
 ```tsx
-import {
-  Badge,
-  Button,
-  Card,
-  Checkbox,
-  Input,
-  Select,
-  Separator,
-  Stack,
-  Switch,
-  Text,
-  Textarea
-} from "@zeno-ui/react";
+import { Button, Card, Stack, Text, ZenoThemeProvider } from "@zeno-ui/react";
 ```
 
 ## Components
@@ -29,6 +17,8 @@ import {
 - Forms: `Input`, `Textarea`, `Select`, `Checkbox`, `Switch`
 
 The 10 shared primitives are mirrored by `@zeno-ui/react-native`: `Stack`, `Text`, `Button`, `Input`, `Card`, `Badge`, `Textarea`, `Select`, `Checkbox`, and `Switch`. `Separator` is available as an additional layout utility.
+
+This package also includes token config helpers and `ZenoThemeProvider`, so web apps do not need a separate runtime package.
 
 ```tsx
 function Example() {

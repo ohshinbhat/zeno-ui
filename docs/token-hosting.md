@@ -4,8 +4,8 @@ Zeno can run as a hosted theme control plane: the website console generates and 
 
 ## Architecture
 
-- `@zeno-ui/tokens` owns the versioned `ZenoTokenConfig` contract.
-- `@zeno-ui/theme-runtime` owns launch-time loading, fallback tokens, caching, and CSS application.
+- `@zeno-ui/react` owns the web component APIs, web runtime provider, hosted theme loader, fallback tokens, caching, CSS application, and exported `ZenoTokenConfig` contract.
+- `@zeno-ui/react-native` owns the native component APIs and native token resolution using the same config contract.
 - `/Users/ohshinbhat/Desktop/zeno-site/app/api/themes/*` currently exposes generation, validation, publish, active JSON/CSS, and immutable version endpoints.
 - Supabase is the recommended v1 persistence layer. Local development falls back to an in-memory store when Supabase env vars are not set.
 
@@ -107,8 +107,7 @@ The JSON endpoint returns a validated `ZenoTokenConfig`. The CSS endpoint return
 Wrap the app once:
 
 ```tsx
-import { ZenoThemeProvider, defaultZenoThemeConfig } from "@zeno-ui/theme-runtime";
-import "@zeno-ui/theme-runtime/styles.css";
+import { ZenoThemeProvider, defaultZenoThemeConfig } from "@zeno-ui/react";
 
 export function App() {
   return (
@@ -135,7 +134,7 @@ Customers can keep an editable fallback in their repo:
 
 ```ts
 // zeno-theme.config.ts
-import { defaultZenoThemeConfig } from "@zeno-ui/theme-runtime";
+import { defaultZenoThemeConfig } from "@zeno-ui/react";
 
 export default {
   ...defaultZenoThemeConfig,

@@ -35,9 +35,6 @@
     "url": "https://github.com/ohshinbhat/zeno-ui/issues"
   },
   "homepage": "https://github.com/ohshinbhat/zeno-ui/tree/main/packages/react-native#readme",
-  "dependencies": {
-    "@zeno-ui/tokens": "0.1.0"
-  },
   "peerDependencies": {
     "react": "^19.0.0 || ^18.2.0",
     "react-native": ">=0.74.0"

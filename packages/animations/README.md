@@ -1,12 +1,5 @@
 # @zeno-ui/animations
 
-Token-driven animation utilities for Zeno UI.
+Private internal workspace package. It is not published to npm.
 
-```bash
-npm install @zeno-ui/animations @zeno-ui/tokens
-```
-
-```ts
-import { generateAnimationCss } from "@zeno-ui/animations";
-```
-
+Customer-facing React APIs are exported from `@zeno-ui/react`; React Native APIs are exported from `@zeno-ui/react-native`.

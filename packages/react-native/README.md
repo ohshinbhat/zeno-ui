@@ -3,7 +3,7 @@
 React Native primitives for the Zeno UI component system.
 
 ```bash
-npm install @zeno-ui/react-native @zeno-ui/tokens react react-native
+npm install @zeno-ui/react-native react react-native
 ```
 
 ```tsx

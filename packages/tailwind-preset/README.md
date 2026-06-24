@@ -1,12 +1,5 @@
 # @zeno-ui/tailwind-preset
 
-Tailwind theme and runtime CSS exporters for Zeno UI tokens.
+Private internal workspace package. It is not published to npm.
 
-```bash
-npm install @zeno-ui/tailwind-preset @zeno-ui/tokens
-```
-
-```ts
-import { generateRuntimeThemeCss, generateTailwindThemeCss } from "@zeno-ui/tailwind-preset";
-```
-
+Web runtime CSS helpers are exported from `@zeno-ui/react`.

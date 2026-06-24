@@ -236,7 +236,7 @@ Repo ownership rules:
 - `zeno-ui` owns package APIs, component behavior, token schema, runtime provider behavior, and package docs.
 - `zeno-site` owns user-facing flows: auth screens, console, generator UX, config preview, project dashboard, and integration instructions.
 - `zeno-api` owns persistence, auth enforcement, keys, versioning, active aliases, and public config fetch endpoints.
-- Website and API can depend on published `@zeno-ui/tokens` for config validation. They should not copy token schema logic.
+- Website and API can depend on the published `@zeno-ui/react` token exports for config validation. They should not copy token schema logic.
 - The package runtime can call the public backend endpoint, but it should not import backend code.
 - The website can use the package components and runtime for preview, but it should not own package implementation.
 

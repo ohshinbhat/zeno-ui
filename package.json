@@ -6,13 +6,14 @@
   "license": "MIT",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
-    "packages/*"
+    "packages/react",
+    "packages/react-native"
   ],
   "scripts": {
     "dev": "yarn build:packages",
     "build": "yarn build:packages",
-    "build:packages": "yarn workspace @zeno-ui/tokens build && yarn workspace @zeno-ui/animations build && yarn workspace @zeno-ui/theme-engine build && yarn workspace @zeno-ui/tailwind-preset build && yarn workspace @zeno-ui/nativewind-preset build && yarn workspace @zeno-ui/theme-runtime build && yarn workspace @zeno-ui/react build && yarn workspace @zeno-ui/react-native build",
-    "typecheck": "yarn workspace @zeno-ui/animations typecheck && yarn workspace @zeno-ui/nativewind-preset typecheck && yarn workspace @zeno-ui/react typecheck && yarn workspace @zeno-ui/react-native typecheck && yarn workspace @zeno-ui/tailwind-preset typecheck && yarn workspace @zeno-ui/theme-engine typecheck && yarn workspace @zeno-ui/theme-runtime typecheck && yarn workspace @zeno-ui/tokens typecheck",
+    "build:packages": "yarn workspace @zeno-ui/react build && yarn workspace @zeno-ui/react-native build",
+    "typecheck": "yarn workspace @zeno-ui/react typecheck && yarn workspace @zeno-ui/react-native typecheck",
     "pack:packages": "yarn build:packages && yarn pack:packages:built",
     "pack:packages:built": "node scripts/release-packages.mjs --pack",
     "release:check": "yarn typecheck && yarn pack:packages",

@@ -1,6 +1,7 @@
 {
   "name": "@zeno-ui/nativewind-preset",
   "version": "0.1.0",
+  "private": true,
   "description": "NativeWind-compatible theme output for Zeno UI tokens.",
   "license": "MIT",
   "type": "module",

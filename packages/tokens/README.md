@@ -1,12 +1,5 @@
 # @zeno-ui/tokens
 
-Canonical token schema, presets, validation, and color utilities for Zeno UI.
+Private internal workspace package. It is not published to npm.
 
-```bash
-npm install @zeno-ui/tokens
-```
-
-```ts
-import { baseTokens, createZenoTokenConfig, themePresets } from "@zeno-ui/tokens";
-```
-
+The customer-facing token config contract and helpers are exported from `@zeno-ui/react` and `@zeno-ui/react-native`.

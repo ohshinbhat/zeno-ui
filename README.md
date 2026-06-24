@@ -2,29 +2,22 @@
 
 Zeno UI is the package/library repo for an AI-powered component and design asset system that helps developers build consistent, themed, and accessible UI with minimal manual effort.
 
-The project is web-first today and NativeWind-ready later. A concise promptable token model generates Tailwind theme output, scoped live preview CSS, NativeWind-compatible theme CSS, and animation recipes.
+The project now publishes only two packages: React for web and React Native for native apps. A concise promptable token model drives hosted theme config, scoped runtime CSS on web, and resolved native theme values.
 
 ## What Is In V1
 
 - Starter React and React Native component kits with 10 shared primitives: `Stack`, `Text`, `Button`, `Input`, `Card`, `Badge`, `Textarea`, `Select`, `Checkbox`, and `Switch`.
 - A `Separator` utility for web and native layouts where a token-driven divider is useful.
-- A rule-based theme engine with research-informed presets like `rainy glassmorphism fintech dashboard`, `immersive webgl 3d portfolio dark energetic`, and `accessible government open design system high contrast clean`.
-- A Tailwind v4 `@theme` exporter and live preview stylesheet generator.
-- A launch-time theme runtime for hosted, customer-hosted, or local fallback token configs.
-- A NativeWind-ready exporter that keeps semantic names aligned for future RN components.
+- Token config helpers, validation, default fallback tokens, and hosted theme runtime exported directly from the two public packages.
+- A launch-time theme provider for hosted, customer-hosted, or local fallback token configs.
 
 The website, console, playground, and Storybook host now live in the sibling project at `/Users/ohshinbhat/Desktop/zeno-site`.
 
 ## Workspace
 
-- `packages/react` - theme-aware React primitives and starter form/display components.
-- `packages/react-native` - React Native primitives powered by the same token config contract.
-- `packages/tokens` - canonical token schema, presets, validation, color utilities.
-- `packages/theme-engine` - prompt parser and deterministic theme generator.
-- `packages/tailwind-preset` - Tailwind `@theme` and runtime CSS exporters.
-- `packages/theme-runtime` - React provider, hosted config loader, cache fallback, and launch script helpers.
-- `packages/nativewind-preset` - NativeWind-compatible theme output.
-- `packages/animations` - token-driven animation utilities.
+- `packages/react` - public React package: components, token config helpers, hosted theme provider, and runtime CSS generation.
+- `packages/react-native` - public React Native package: components, token config helpers, and native provider.
+- Other legacy folders under `packages/` are not Yarn workspaces and are not published.
 - `docs/architecture.md` - editable product architecture and repo plan for the website, package, and backend.
 - `docs/publishing.md` - npm Trusted Publishing release process and fallback guidance.
 - `docs/zeno-agent-context.md` - operational agent context for cloud runtime, package contracts, Supabase, and npm readiness.
@@ -46,7 +39,10 @@ The repo uses Yarn Classic workspaces and does not require Corepack.
 
 ## Publishing To npm
 
-The root package is private. Publish only the workspace packages under `packages/*`.
+The root package is private. Publish only the two public workspace packages:
+
+- `@zeno-ui/react`
+- `@zeno-ui/react-native`
 
 The preferred release path is npm Trusted Publishing through GitHub Actions. This uses OIDC from the `publish.yml` workflow instead of a long-lived npm token or local OTP prompts, and npm automatically creates provenance attestations for public packages published this way.
 
@@ -58,9 +54,9 @@ yarn typecheck
 yarn pack:packages
 ```
 
-See `docs/publishing.md` for the full release process. Configure npm once for each package:
+See `docs/publishing.md` for the full release process. Configure npm once for each public package:
 
-- On npmjs.com, open each `@zeno-ui/*` package settings page.
+- On npmjs.com, open the `@zeno-ui/react` and `@zeno-ui/react-native` package settings pages.
 - Add a Trusted Publisher.
 - Provider: GitHub Actions.
 - Organization/user: `ohshinbhat`.
@@ -75,19 +71,18 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-You can also run the `Publish Packages` workflow manually from GitHub Actions. The release script publishes packages in dependency order and skips package versions that are already on npm, so rerunning after a partial publish is safe.
+You can also run the `Publish Packages` workflow manually from GitHub Actions. The release script publishes only `@zeno-ui/react` and `@zeno-ui/react-native`, and skips package versions that are already on npm, so rerunning after a partial publish is safe.
 
-Each package is scoped as `@zeno-ui/*` and has `publishConfig.access` set to `public`.
+Both public packages are scoped as `@zeno-ui/*` and have `publishConfig.access` set to `public`.
 
 Local publishing is intentionally a fallback. If you publish locally, use an npm granular access token configured for package publish with the required 2FA policy, then run `yarn publish:packages:built`. Do not commit tokens or `.npmrc` auth lines.
 
 ## Component Packages
 
-React web apps use `@zeno-ui/theme-runtime` plus `@zeno-ui/react`:
+React web apps use `@zeno-ui/react`:
 
 ```tsx
-import { ZenoThemeProvider } from "@zeno-ui/theme-runtime";
-import { Button, Card, Stack, Text } from "@zeno-ui/react";
+import { Button, Card, Stack, Text, ZenoThemeProvider } from "@zeno-ui/react";
 ```
 
 React Native apps use the native provider and components from `@zeno-ui/react-native`:
@@ -115,4 +110,4 @@ yarn install
 yarn dev
 ```
 
-That project consumes these packages through local `file:../zeno-ui/packages/*` dependencies.
+That project should consume `packages/react` and `packages/react-native` directly through local file dependencies when developing across repos.

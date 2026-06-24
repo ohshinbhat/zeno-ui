@@ -1,6 +1,7 @@
 {
   "name": "@zeno-ui/theme-engine",
   "version": "0.1.0",
+  "private": true,
   "description": "Deterministic prompt-to-theme generator for Zeno UI.",
   "license": "MIT",
   "type": "module",

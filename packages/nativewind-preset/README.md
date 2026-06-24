@@ -1,12 +1,5 @@
 # @zeno-ui/nativewind-preset
 
-NativeWind-compatible theme output for Zeno UI tokens.
+Private internal workspace package. It is not published to npm.
 
-```bash
-npm install @zeno-ui/nativewind-preset @zeno-ui/tokens
-```
-
-```ts
-import { generateNativeWindThemeCss } from "@zeno-ui/nativewind-preset";
-```
-
+React Native component and token APIs are exported from `@zeno-ui/react-native`.

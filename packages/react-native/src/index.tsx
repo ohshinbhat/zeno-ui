@@ -23,7 +23,7 @@ import {
   type ZenoAssetToken,
   type ZenoTokenConfig,
   type ZenoTokenConfigInput
-} from "@zeno-ui/tokens";
+} from "./tokens.js";
 
 export type ZenoSize = "$2" | "$3" | "$4" | "$5";
 export type ZenoTone = "neutral" | "brand" | "success" | "warning" | "danger";
@@ -1165,4 +1165,31 @@ export function Separator({
   );
 }
 
-export type { ZenoAssetToken, ZenoTokenConfig, ZenoTokenConfigInput };
+export {
+  allowedAssetTokenKeys,
+  baseTokens,
+  createZenoTokenConfig,
+  mergeTokens,
+  readZenoTokenConfig,
+  validateTheme,
+  zenoTokenConfigSchemaVersion,
+  type ColorTokens,
+  type DesignTokens,
+  type MotionTokens,
+  type RadiusTokens,
+  type ShadowTokens,
+  type SizeTokens,
+  type SpacingTokens,
+  type ThemeContrast,
+  type ThemeDensity,
+  type ThemeKnobs,
+  type ThemeMode,
+  type ThemeType,
+  type TypeTokens,
+  type ValidationResult,
+  type ZenoAssetToken,
+  type ZenoTokenConfig,
+  type ZenoTokenConfigInput,
+  type ZenoTokenConfigMetadata,
+  type ZenoTokenConfigReadResult
+} from "./tokens.js";

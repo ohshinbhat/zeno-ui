@@ -1,6 +1,7 @@
 {
   "name": "@zeno-ui/theme-runtime",
   "version": "0.1.0",
+  "private": true,
   "description": "React runtime provider and hosted-theme loader for Zeno UI token configs.",
   "license": "MIT",
   "type": "module",

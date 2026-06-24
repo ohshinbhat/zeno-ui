@@ -6,12 +6,6 @@ import { spawnSync } from "node:child_process";
 const registry = "https://registry.npmjs.org/";
 const npm = ["npm", "--cache", ".npm-cache"];
 const packages = [
-  "./packages/tokens",
-  "./packages/animations",
-  "./packages/theme-engine",
-  "./packages/tailwind-preset",
-  "./packages/nativewind-preset",
-  "./packages/theme-runtime",
   "./packages/react",
   "./packages/react-native"
 ];
