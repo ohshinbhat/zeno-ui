@@ -102,9 +102,12 @@ ${generateThemeVariables(tokens)}
   font-size: var(--text-body);
 }
 ${scope} .bg-background { background-color: var(--color-background); }
+${scope} .bg-transparent { background-color: transparent; }
 ${scope} .bg-surface { background-color: var(--color-surface); }
 ${scope} .bg-surface-raised { background-color: var(--color-surface-raised); }
 ${scope} .bg-surface-glass { background-color: var(--color-surface-glass); }
+${scope} .bg-text { background-color: var(--color-text); }
+${scope} .bg-border { background-color: var(--color-border); }
 ${scope} .bg-brand { background-color: var(--color-brand); }
 ${scope} .bg-accent { background-color: var(--color-accent); }
 ${scope} .bg-success { background-color: var(--color-success); }
@@ -112,6 +115,7 @@ ${scope} .bg-warning { background-color: var(--color-warning); }
 ${scope} .bg-danger { background-color: var(--color-danger); }
 ${scope} .text-text { color: var(--color-text); }
 ${scope} .text-text-muted { color: var(--color-text-muted); }
+${scope} .text-background { color: var(--color-background); }
 ${scope} .text-brand { color: var(--color-brand); }
 ${scope} .text-brand-contrast { color: var(--color-brand-contrast); }
 ${scope} .text-accent { color: var(--color-accent); }
@@ -119,8 +123,14 @@ ${scope} .text-accent-contrast { color: var(--color-accent-contrast); }
 ${scope} .text-success { color: var(--color-success); }
 ${scope} .text-warning { color: var(--color-warning); }
 ${scope} .text-danger { color: var(--color-danger); }
+${scope} .border-transparent { border-color: transparent; }
 ${scope} .border-border { border-color: var(--color-border); }
+${scope} .border-text { border-color: var(--color-text); }
 ${scope} .border-brand { border-color: var(--color-brand); }
+${scope} .border-accent { border-color: var(--color-accent); }
+${scope} .border-success { border-color: var(--color-success); }
+${scope} .border-warning { border-color: var(--color-warning); }
+${scope} .border-danger { border-color: var(--color-danger); }
 ${scope} .rounded-control { border-radius: var(--radius-control); }
 ${scope} .rounded-card { border-radius: var(--radius-card); }
 ${scope} .rounded-pill { border-radius: var(--radius-pill); }

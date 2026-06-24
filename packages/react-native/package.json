@@ -1,7 +1,7 @@
 {
-  "name": "@zeno-ui/tailwind-preset",
+  "name": "@zeno-ui/react-native",
   "version": "0.1.0",
-  "description": "Tailwind theme and runtime CSS exporters for Zeno UI tokens.",
+  "description": "React Native primitives for the Zeno UI component system.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -29,17 +29,21 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ohshinbhat/zeno-ui.git",
-    "directory": "packages/tailwind-preset"
+    "directory": "packages/react-native"
   },
   "bugs": {
     "url": "https://github.com/ohshinbhat/zeno-ui/issues"
   },
-  "homepage": "https://github.com/ohshinbhat/zeno-ui/tree/main/packages/tailwind-preset#readme",
+  "homepage": "https://github.com/ohshinbhat/zeno-ui/tree/main/packages/react-native#readme",
   "dependencies": {
-    "@zeno-ui/animations": "0.1.0",
     "@zeno-ui/tokens": "0.1.0"
   },
+  "peerDependencies": {
+    "react": "^19.0.0 || ^18.2.0",
+    "react-native": ">=0.74.0"
+  },
   "devDependencies": {
+    "@types/react": "^19.0.2",
     "typescript": "^5.7.2"
   }
 }

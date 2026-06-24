@@ -1,19 +1,40 @@
 {
   "name": "@zeno-ui/animations",
   "version": "0.1.0",
+  "description": "Token-driven animation utilities for Zeno UI.",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
       "default": "./dist/index.js"
     }
   },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohshinbhat/zeno-ui.git",
+    "directory": "packages/animations"
+  },
+  "bugs": {
+    "url": "https://github.com/ohshinbhat/zeno-ui/issues"
+  },
+  "homepage": "https://github.com/ohshinbhat/zeno-ui/tree/main/packages/animations#readme",
   "dependencies": {
     "@zeno-ui/tokens": "0.1.0"
   },

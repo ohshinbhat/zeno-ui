@@ -1,4 +1,4 @@
-import { cn } from "./utils";
+import { cn } from "./utils.js";
 
 export type ZenoSize = "$2" | "$3" | "$4" | "$5";
 export type ZenoTone = "neutral" | "brand" | "success" | "warning" | "danger";
