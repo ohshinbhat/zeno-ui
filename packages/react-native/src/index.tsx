@@ -550,7 +550,10 @@ function textWeightValue(weight: TextProps["weight"]): TextStyle {
 
 function gapValue(theme: ZenoNativeTheme, gap: ZenoSize | "none"): number {
   if (gap === "none") return 0;
-  return theme.spacing[sizeKeys[gap].gap];
+  if (gap === "$2") return theme.spacing.gap2;
+  if (gap === "$3") return theme.spacing.gap3;
+  if (gap === "$4") return theme.spacing.gap4;
+  return theme.spacing.gap5;
 }
 
 export type StackProps = ViewProps & {
@@ -744,12 +747,13 @@ export function Badge({
 }: BadgeProps): React.ReactElement {
   const theme = useNativeTheme();
   const variantStyle = toneVariantStyle(theme, tone, variant);
+  const controlHeight = theme.size[sizeKeys[size].control] ?? theme.size.control2;
 
   return (
     <View
       style={[controlFrameStyle(theme, size, false), {
         alignSelf: "flex-start",
-        minHeight: theme.size[sizeKeys[size].control] * 0.78
+        minHeight: controlHeight * 0.78
       }, variantStyle.frame, style]}
       {...props}
     >
@@ -911,13 +915,14 @@ export function Textarea({
 }: TextareaProps): React.ReactElement {
   const theme = useNativeTheme();
   const rows = numberOfLines ?? minRows;
+  const paddingY = theme.size.paddingY3 ?? 10;
 
   return (
     <Input
       multiline={multiline}
       numberOfLines={rows}
       style={[{
-        minHeight: theme.type.bodyLineHeight * rows + theme.size.paddingY3 * 2,
+        minHeight: theme.type.bodyLineHeight * rows + paddingY * 2,
         textAlignVertical: "top"
       }, style]}
       {...props}
@@ -1019,6 +1024,7 @@ export function Checkbox({
   const [internalChecked, setInternalChecked] = React.useState(defaultChecked);
   const resolvedChecked = isControlled ? checked : internalChecked;
   const color = toneColor(theme, tone);
+  const controlRadius = theme.radius.control ?? 12;
 
   function handlePress(event: GestureResponderEvent): void {
     onPress?.(event);
@@ -1045,7 +1051,7 @@ export function Checkbox({
         width: 18,
         height: 18,
         marginTop: 2,
-        borderRadius: theme.radius.control * 0.35,
+        borderRadius: controlRadius * 0.35,
         borderWidth: 1,
         borderColor: resolvedChecked ? color : theme.colors.border,
         backgroundColor: resolvedChecked ? color : theme.colors.surface,
