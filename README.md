@@ -79,7 +79,7 @@ git push origin main --tags
 
 ## Trusted Publishing
 
-The publish workflow is set up for npm trusted publishing with GitHub Actions OIDC. In npm, connect this repository to each package:
+The publish workflow is set up for npm trusted publishing with GitHub Actions OIDC. It runs on Node 24 so the npm CLI supports trusted publishing, and it strips token auth during the publish step so npm uses OIDC. In npm, connect this repository to each package:
 
 - `@zenoui/react`
 - `@zenoui/react-native`

@@ -11,6 +11,20 @@ const npmRegistryUrl = "https://registry.npmjs.org/";
 const npmTag = process.env.NPM_TAG ?? "latest";
 const dryRun = process.argv.includes("--dry-run") || process.env.DRY_RUN === "1";
 const useProvenance = process.env.GITHUB_ACTIONS === "true";
+const publishEnv = {
+  ...process.env,
+  npm_config_cache: npmCacheDir,
+  NPM_CONFIG_CACHE: npmCacheDir,
+  npm_config_registry: npmRegistryUrl,
+  NPM_CONFIG_REGISTRY: npmRegistryUrl
+};
+
+if (useProvenance) {
+  delete publishEnv.NODE_AUTH_TOKEN;
+  delete publishEnv.NPM_TOKEN;
+  delete publishEnv.NPM_CONFIG_USERCONFIG;
+  delete publishEnv.npm_config_userconfig;
+}
 
 const tarballs = [
   resolve(artifactsDir, "zenoui-react.tgz"),
@@ -42,12 +56,6 @@ for (const tarball of tarballs) {
   execFileSync("npm", args, {
     cwd: repoRoot,
     stdio: "inherit",
-    env: {
-      ...process.env,
-      npm_config_cache: npmCacheDir,
-      NPM_CONFIG_CACHE: npmCacheDir,
-      npm_config_registry: npmRegistryUrl,
-      NPM_CONFIG_REGISTRY: npmRegistryUrl
-    }
+    env: publishEnv
   });
 }
