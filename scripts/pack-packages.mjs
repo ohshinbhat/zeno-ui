@@ -1,4 +1,4 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, rm } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -17,6 +17,7 @@ const packages = [
   }
 ];
 
+await rm(artifactsDir, { recursive: true, force: true });
 await mkdir(artifactsDir, { recursive: true });
 
 for (const entry of packages) {

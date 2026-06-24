@@ -1,0 +1,53 @@
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Package version to publish, for example 0.1.1"
+        required: true
+      npm_tag:
+        description: "npm dist-tag"
+        required: false
+        default: latest
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    env:
+      RELEASE_VERSION: ${{ github.event_name == 'push' && github.ref_name || inputs.version }}
+      NPM_TAG: ${{ github.event_name == 'push' && 'latest' || inputs.npm_tag }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          registry-url: https://registry.npmjs.org
+
+      - name: Normalize release version
+        run: echo "RELEASE_VERSION=${RELEASE_VERSION#v}" >> "$GITHUB_ENV"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Assert manifest versions
+        run: node ./scripts/assert-release-version.mjs "$RELEASE_VERSION"
+
+      - name: Build release artifacts
+        run: yarn release:check
+
+      - name: Publish npm packages
+        run: yarn release:publish
+

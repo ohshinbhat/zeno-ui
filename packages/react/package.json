@@ -4,8 +4,18 @@
   "description": "Zeno UI web primitives and hosted theme runtime.",
   "license": "MIT",
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ohshinbhat/zeno-ui.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://github.com/ohshinbhat/zeno-ui/tree/main/packages/react",
+  "bugs": {
+    "url": "https://github.com/ohshinbhat/zeno-ui/issues"
+  },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

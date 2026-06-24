@@ -3,14 +3,25 @@
   "private": true,
   "version": "0.1.0",
   "packageManager": "yarn@1.22.22",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ohshinbhat/zeno-ui.git"
+  },
+  "homepage": "https://github.com/ohshinbhat/zeno-ui",
+  "bugs": {
+    "url": "https://github.com/ohshinbhat/zeno-ui/issues"
+  },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
+    "clean:artifacts": "node ./scripts/clean-artifacts.mjs",
     "typecheck": "yarn workspace @zenoui/react typecheck && yarn workspace @zenoui/react-native typecheck",
     "build:packages": "yarn workspace @zenoui/react build && yarn workspace @zenoui/react-native build",
     "pack:packages": "node ./scripts/pack-packages.mjs",
-    "release:check": "yarn typecheck && yarn build:packages && yarn pack:packages"
+    "release:version": "node ./scripts/release-version.mjs",
+    "release:check": "yarn typecheck && yarn build:packages && yarn pack:packages",
+    "release:publish": "node ./scripts/publish-packages.mjs"
   },
   "devDependencies": {
     "@types/react": "^18.3.4",
