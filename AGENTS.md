@@ -129,8 +129,8 @@ Do not reintroduce manual admin-token publishing. Publishing is session based an
 
 The public package family is intentionally small:
 
-- `@zeno-ui/react`
-- `@zeno-ui/react-native`
+- `@zenoui/react`
+- `@zenoui/react-native`
 
 Token schema, theme runtime, CSS generation, and native token mapping are shipped inside those public packages. Older supporting package folders may remain in the repo as private/internal history, but they should not be published as separate npm packages.
 
@@ -138,12 +138,12 @@ The library currently has a small React component set. It should grow around sta
 
 ## Package Responsibilities
 
-Keep the public `@zeno-ui/*` package names stable.
+Keep the public `@zenoui/*` package names stable.
 
 | Package | Responsibility | Runtime role |
 | --- | --- | --- |
-| `@zeno-ui/react` | React web primitives, token config helpers, runtime CSS, hosted theme provider | Main web package |
-| `@zeno-ui/react-native` | React Native primitives, token config helpers, native provider | Main native package |
+| `@zenoui/react` | React web primitives, token config helpers, runtime CSS, hosted theme provider | Main web package |
+| `@zenoui/react-native` | React Native primitives, token config helpers, native provider | Main native package |
 
 Planned package direction:
 
@@ -198,7 +198,7 @@ For web apps, pre-hydration theme application matters. Use `createZenoThemeScrip
 Next.js example:
 
 ```tsx
-import { createZenoThemeScript, ZenoThemeProvider } from "@zeno-ui/react";
+import { createZenoThemeScript, ZenoThemeProvider } from "@zenoui/react";
 
 const source = {
   type: "zeno",
@@ -350,8 +350,8 @@ Published version rules:
 
 The `zeno-ui` root package is private. Publish only:
 
-- `@zeno-ui/react`
-- `@zeno-ui/react-native`
+- `@zenoui/react`
+- `@zenoui/react-native`
 
 Before publishing:
 
@@ -369,7 +369,7 @@ yarn release:check
 
 Package invariants:
 
-- Keep package names scoped as `@zeno-ui/*`.
+- Keep package names scoped as `@zenoui/*`.
 - Add a root MIT license before official public npm release if the project is intended to be open source.
 
 Current local verification commands:
@@ -384,7 +384,7 @@ yarn pack:packages
 
 `zeno-site` must be deployable from its own repository. It should not depend on a sibling `../zeno-ui` checkout in Vercel.
 
-The site may vendor or workspace-link the Zeno packages inside the repo for deployment, but the external package names should remain `@zeno-ui/*`.
+The site may vendor or workspace-link the Zeno packages inside the repo for deployment, but the external package names should remain `@zenoui/*`.
 
 Required environment variables:
 
@@ -417,7 +417,7 @@ When working on `zeno-site`:
 - Do not reintroduce manual admin-token publishing.
 - Production storage should use Supabase as the durable source.
 - In-memory storage is local fallback only.
-- Preserve the `@zeno-ui/*` package contract.
+- Preserve the `@zenoui/*` package contract.
 
 When working on `zeno-ui`:
 

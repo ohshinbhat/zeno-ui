@@ -9,11 +9,11 @@ const artifactsDir = resolve(repoRoot, "artifacts");
 const packages = [
   {
     dir: resolve(repoRoot, "packages/react"),
-    file: resolve(artifactsDir, "zeno-ui-react.tgz")
+    file: resolve(artifactsDir, "zenoui-react.tgz")
   },
   {
     dir: resolve(repoRoot, "packages/react-native"),
-    file: resolve(artifactsDir, "zeno-ui-react-native.tgz")
+    file: resolve(artifactsDir, "zenoui-react-native.tgz")
   }
 ];
 
@@ -25,4 +25,3 @@ for (const entry of packages) {
     stdio: "inherit"
   });
 }
-

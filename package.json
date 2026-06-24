@@ -7,8 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "typecheck": "yarn workspace @zeno-ui/react typecheck && yarn workspace @zeno-ui/react-native typecheck",
-    "build:packages": "yarn workspace @zeno-ui/react build && yarn workspace @zeno-ui/react-native build",
+    "typecheck": "yarn workspace @zenoui/react typecheck && yarn workspace @zenoui/react-native typecheck",
+    "build:packages": "yarn workspace @zenoui/react build && yarn workspace @zenoui/react-native build",
     "pack:packages": "node ./scripts/pack-packages.mjs",
     "release:check": "yarn typecheck && yarn build:packages && yarn pack:packages"
   },
@@ -19,4 +19,3 @@
     "typescript": "^5.5.4"
   }
 }
-
