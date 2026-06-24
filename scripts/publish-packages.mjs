@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const artifactsDir = resolve(repoRoot, "artifacts");
 const npmCacheDir = resolve(repoRoot, ".npm-cache");
+const npmRegistryUrl = "https://registry.npmjs.org/";
 const npmTag = process.env.NPM_TAG ?? "latest";
 const dryRun = process.argv.includes("--dry-run") || process.env.DRY_RUN === "1";
 const useProvenance = process.env.GITHUB_ACTIONS === "true";
@@ -19,7 +20,16 @@ const tarballs = [
 for (const tarball of tarballs) {
   await access(tarball, constants.R_OK);
 
-  const args = ["publish", tarball, "--access", "public", "--tag", npmTag];
+  const args = [
+    "publish",
+    tarball,
+    "--access",
+    "public",
+    "--tag",
+    npmTag,
+    "--registry",
+    npmRegistryUrl
+  ];
 
   if (dryRun) {
     args.push("--dry-run");
@@ -35,7 +45,9 @@ for (const tarball of tarballs) {
     env: {
       ...process.env,
       npm_config_cache: npmCacheDir,
-      NPM_CONFIG_CACHE: npmCacheDir
+      NPM_CONFIG_CACHE: npmCacheDir,
+      npm_config_registry: npmRegistryUrl,
+      NPM_CONFIG_REGISTRY: npmRegistryUrl
     }
   });
 }
