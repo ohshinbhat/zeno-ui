@@ -55,3 +55,5 @@ jobs:
 
       - name: Publish npm packages
         run: yarn release:publish
+        env:
+          NODE_AUTH_TOKEN: ""
