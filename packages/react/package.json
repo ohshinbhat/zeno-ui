@@ -1,0 +1,30 @@
+{
+  "name": "@zeno-ui/react",
+  "version": "0.1.0",
+  "description": "Zeno UI web primitives and hosted theme runtime.",
+  "license": "MIT",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0 || ^19.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}
