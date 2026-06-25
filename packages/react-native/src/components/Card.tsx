@@ -1,51 +1,34 @@
 import React from "react";
-import { StyleProp, View, ViewProps, ViewStyle } from "react-native";
-
-import { useZenoTheme } from "../provider";
+import { View, ViewProps } from "react-native";
 
 import type { SpaceValue } from "./types";
-import { resolveScaleValue, toUnit } from "./utils";
+import { cn, spaceClass } from "./utils";
 
-export type CardProps = ViewProps & {
+export type CardProps = Omit<ViewProps, "style"> & {
   tone?: "surface" | "subtle";
   padding?: SpaceValue;
-  style?: StyleProp<ViewStyle>;
 };
+
+const toneClasses = {
+  surface: "bg-[--zeno-color-bg-surface]",
+  subtle: "bg-[--zeno-color-bg-subtle]"
+} as const;
 
 export function Card({
   tone = "surface",
   padding = "lg",
-  style,
+  className,
   ...props
 }: CardProps) {
-  const { config } = useZenoTheme();
-
   return (
     <View
       {...props}
-      style={[
-        {
-          gap: resolveScaleValue(config.tokens.spacing, "md", "md"),
-          padding: resolveScaleValue(config.tokens.spacing, padding, "lg"),
-          backgroundColor:
-            tone === "subtle"
-              ? config.tokens.color["bg.subtle"]
-              : config.tokens.color["bg.surface"],
-          borderColor: config.tokens.color["border.default"],
-          borderWidth: 1,
-          borderRadius: toUnit(config.tokens.radius.lg),
-          shadowColor: "#10213a",
-          shadowOpacity: 0.1,
-          shadowRadius: 14,
-          shadowOffset: {
-            width: 0,
-            height: 8
-          },
-          elevation: 4
-        },
-        style
-      ]}
+      className={cn(
+        "gap-[--zeno-spacing-md] rounded-[--zeno-radius-lg] border border-[--zeno-color-border-default] shadow-lg shadow-black/10",
+        toneClasses[tone],
+        spaceClass(padding, "p"),
+        className
+      )}
     />
   );
 }
-

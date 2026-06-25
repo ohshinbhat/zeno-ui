@@ -1,45 +1,37 @@
 import React, { ElementType, HTMLAttributes } from "react";
 
-import { useZenoTheme } from "../provider";
-
 import type { SpaceValue } from "./types";
-import { resolveScaleValue } from "./utils";
+import { cn, spaceClass } from "./utils";
 
-export type CardProps = HTMLAttributes<HTMLDivElement> & {
+export type CardProps = Omit<HTMLAttributes<HTMLDivElement>, "style"> & {
   as?: ElementType;
   tone?: "surface" | "subtle";
   padding?: SpaceValue;
 };
 
+const toneClasses = {
+  surface: "bg-[var(--zeno-color-bg-surface)]",
+  subtle: "bg-[var(--zeno-color-bg-subtle)]"
+} as const;
+
 export function Card({
   as,
   tone = "surface",
   padding = "lg",
-  style,
+  className,
   ...props
 }: CardProps) {
-  const { config } = useZenoTheme();
   const Component = as ?? "div";
 
   return (
     <Component
       {...props}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: resolveScaleValue(config.tokens.spacing, "md", "md"),
-        padding: resolveScaleValue(config.tokens.spacing, padding, "lg"),
-        backgroundColor:
-          tone === "subtle"
-            ? config.tokens.color["bg.subtle"]
-            : config.tokens.color["bg.surface"],
-        color: config.tokens.color["text.primary"],
-        border: `1px solid ${config.tokens.color["border.default"]}`,
-        borderRadius: config.tokens.radius.lg,
-        boxShadow: config.tokens.shadow.card,
-        ...style
-      }}
+      className={cn(
+        "flex flex-col gap-[var(--zeno-spacing-md)] rounded-[var(--zeno-radius-lg)] border border-[var(--zeno-color-border-default)] text-[var(--zeno-color-text-primary)] shadow-[var(--zeno-shadow-card)]",
+        toneClasses[tone],
+        spaceClass(padding, "p"),
+        className
+      )}
     />
   );
 }
-

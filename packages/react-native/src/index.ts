@@ -1,9 +1,25 @@
-export { Button, Card, Input, Stack, Text } from "./components";
+export {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Checkbox,
+  Input,
+  Select,
+  Stack,
+  Switch,
+  Text
+} from "./components";
 export type {
+  AvatarProps,
+  BadgeProps,
   ButtonProps,
   CardProps,
+  CheckboxProps,
   InputProps,
+  SelectProps,
   StackProps,
+  SwitchProps,
   TextProps
 } from "./components";
 export { ZenoProvider, ZenoThemeProvider, useZenoTheme } from "./provider";

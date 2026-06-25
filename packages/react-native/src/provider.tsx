@@ -1,4 +1,6 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { View } from "react-native";
+import { vars } from "nativewind";
 
 import { ZenoRuntimePolicy, ZenoThemeContextValue, ZenoThemeSource, ZenoThemeStatus, ZenoTokenConfig } from "./types";
 import { defaultZenoTheme, getZenoCacheKey, normalizeZenoTheme, resolveHostedThemeUrl, validateZenoTokenConfig } from "./theme";
@@ -33,6 +35,23 @@ const defaultContextValue: ZenoThemeContextValue = {
 
 const ZenoThemeContext = createContext<ZenoThemeContextValue>(defaultContextValue);
 const runtimeCache = new Map<string, ZenoTokenConfig>();
+
+const toNativeWindVars = (theme: ZenoTokenConfig) => {
+  const entries: Record<string, string> = {};
+  const groups = ["color", "radius", "spacing", "type", "size", "shadow", "motion"] as const;
+
+  for (const group of groups) {
+    for (const [key, value] of Object.entries(theme.tokens[group])) {
+      entries[`--zeno-${group}-${key.replace(/\./g, "-")}`] = value;
+    }
+  }
+
+  entries["--zeno-blur-glass"] = theme.tokens.blur.glass;
+  entries["--zeno-opacity-glass"] = theme.tokens.opacity.glass;
+  entries["--zeno-opacity-disabled"] = theme.tokens.opacity.disabled;
+
+  return entries;
+};
 
 const getInitialState = (
   source: ZenoThemeSource,
@@ -190,7 +209,9 @@ export function ZenoThemeProvider({
 
   return (
     <ZenoThemeContext.Provider value={contextValue}>
-      {children}
+      <View className="flex-1" style={vars(toNativeWindVars(state.config))}>
+        {children}
+      </View>
     </ZenoThemeContext.Provider>
   );
 }

@@ -1,6 +1,4 @@
-import type { ZenoTokenConfig } from "../types";
-
-export type SpaceValue = keyof ZenoTokenConfig["tokens"]["spacing"] | number | string;
+export type SpaceValue = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export type TextTone =
   | "default"
@@ -10,3 +8,19 @@ export type TextTone =
   | "success"
   | "danger";
 
+export type ControlSize = "sm" | "md" | "lg";
+
+export type ZenoCheckedState = boolean | "indeterminate";
+
+export type SelectOption = {
+  label: string;
+  value: string;
+  disabled?: boolean;
+};
+
+export type ComponentTone =
+  | "default"
+  | "brand"
+  | "success"
+  | "danger"
+  | "muted";

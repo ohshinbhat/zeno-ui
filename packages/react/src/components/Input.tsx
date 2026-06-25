@@ -1,61 +1,61 @@
-import React, { InputHTMLAttributes } from "react";
-
-import { useZenoTheme } from "../provider";
+import React, { InputHTMLAttributes, useId } from "react";
 
 import { Stack } from "./Stack";
 import { Text } from "./Text";
-import { resolveScaleValue } from "./utils";
+import { cn } from "./utils";
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "style"> & {
   label?: string;
   description?: string;
   error?: string;
+  containerClassName?: string;
+  helperClassName?: string;
+  labelClassName?: string;
 };
 
 export function Input({
   label,
   description,
   error,
-  style,
+  id,
+  className,
+  containerClassName,
+  helperClassName,
+  labelClassName,
   ...props
 }: InputProps) {
-  const { config } = useZenoTheme();
-  const tone = error ? "danger" : "muted";
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const helperId = description || error ? `${inputId}-helper` : undefined;
 
   return (
-    <Stack gap="xs">
+    <Stack gap="xs" className={containerClassName}>
       {label ? (
-        <Text as="label" variant="label" weight={600}>
+        <Text as="label" htmlFor={inputId} variant="label" weight={600} className={labelClassName}>
           {label}
         </Text>
       ) : null}
       <input
         {...props}
-        style={{
-          width: "100%",
-          minHeight: config.tokens.size.controlMd,
-          paddingInline: resolveScaleValue(config.tokens.spacing, "md", "md"),
-          paddingBlock: resolveScaleValue(config.tokens.spacing, "sm", "sm"),
-          backgroundColor: config.tokens.color["bg.surface"],
-          color: config.tokens.color["text.primary"],
-          border: `1px solid ${
-            error
-              ? config.tokens.color["status.danger"]
-              : config.tokens.color["border.default"]
-          }`,
-          borderRadius: config.tokens.radius.md,
-          outline: "none",
-          boxSizing: "border-box",
-          transition: `border-color ${config.tokens.motion.fast}, box-shadow ${config.tokens.motion.fast}`,
-          ...style
-        }}
+        id={inputId}
+        aria-describedby={helperId}
+        aria-invalid={Boolean(error) || undefined}
+        className={cn(
+          "min-h-[var(--zeno-size-controlMd)] w-full rounded-[var(--zeno-radius-md)] border bg-[var(--zeno-color-bg-surface)] px-[var(--zeno-spacing-md)] py-[var(--zeno-spacing-sm)] text-[length:var(--zeno-type-body)] text-[var(--zeno-color-text-primary)] outline-none transition-[border-color,box-shadow] duration-[var(--zeno-motion-fast)] placeholder:text-[var(--zeno-color-text-secondary)] focus:border-[var(--zeno-color-brand-primary)] focus:shadow-[var(--zeno-shadow-focus)] disabled:cursor-not-allowed disabled:opacity-[var(--zeno-opacity-disabled)]",
+          error ? "border-[var(--zeno-color-status-danger)]" : "border-[var(--zeno-color-border-default)]",
+          className
+        )}
       />
       {description || error ? (
-        <Text variant="caption" tone={tone}>
+        <Text
+          id={helperId}
+          variant="caption"
+          tone={error ? "danger" : "muted"}
+          className={helperClassName}
+        >
           {error ?? description}
         </Text>
       ) : null}
     </Stack>
   );
 }
-

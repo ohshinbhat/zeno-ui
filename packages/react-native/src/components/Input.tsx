@@ -1,69 +1,58 @@
 import React from "react";
-import {
-  StyleProp,
-  TextInput,
-  TextInputProps,
-  TextStyle,
-  ViewStyle
-} from "react-native";
-
-import { useZenoTheme } from "../provider";
+import { TextInput, TextInputProps } from "react-native";
 
 import { Stack } from "./Stack";
 import { Text } from "./Text";
-import { resolveScaleValue, toUnit } from "./utils";
+import { cn } from "./utils";
 
 export type InputProps = Omit<TextInputProps, "style"> & {
   label?: string;
   description?: string;
   error?: string;
-  style?: StyleProp<TextStyle>;
-  containerStyle?: StyleProp<ViewStyle>;
+  containerClassName?: string;
+  helperClassName?: string;
+  labelClassName?: string;
 };
 
 export function Input({
   label,
   description,
   error,
-  style,
-  containerStyle,
+  containerClassName,
+  helperClassName,
+  labelClassName,
+  className,
   ...props
 }: InputProps) {
-  const { config } = useZenoTheme();
   const tone = error ? "danger" : "muted";
 
   return (
-    <Stack gap="xs" style={containerStyle}>
+    <Stack gap="xs" className={containerClassName}>
       {label ? (
-        <Text variant="label" weight={600}>
+        <Text variant="label" weight={600} className={labelClassName}>
           {label}
         </Text>
       ) : null}
       <TextInput
         {...props}
-        placeholderTextColor={config.tokens.color["text.secondary"]}
-        style={[
-          {
-            minHeight: toUnit(config.tokens.size.controlMd),
-            paddingHorizontal: resolveScaleValue(config.tokens.spacing, "md", "md"),
-            paddingVertical: resolveScaleValue(config.tokens.spacing, "sm", "sm"),
-            backgroundColor: config.tokens.color["bg.surface"],
-            color: config.tokens.color["text.primary"],
-            borderColor: error
-              ? config.tokens.color["status.danger"]
-              : config.tokens.color["border.default"],
-            borderWidth: 1,
-            borderRadius: toUnit(config.tokens.radius.md)
-          },
-          style
-        ]}
+        accessibilityLabel={props.accessibilityLabel ?? label}
+        accessibilityHint={props.accessibilityHint ?? error ?? description}
+        accessibilityState={{
+          ...props.accessibilityState,
+          disabled: props.editable === false
+        }}
+        className={cn(
+          "min-h-[--zeno-size-controlMd] rounded-[--zeno-radius-md] border bg-[--zeno-color-bg-surface] px-[--zeno-spacing-md] py-[--zeno-spacing-sm] text-[--zeno-type-body] text-[--zeno-color-text-primary]",
+          error ? "border-[--zeno-color-status-danger]" : "border-[--zeno-color-border-default]",
+          props.editable === false && "opacity-[--zeno-opacity-disabled]",
+          className
+        )}
       />
       {description || error ? (
-        <Text variant="caption" tone={tone}>
+        <Text variant="caption" tone={tone} className={helperClassName}>
           {error ?? description}
         </Text>
       ) : null}
     </Stack>
   );
 }
-
